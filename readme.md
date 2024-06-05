@@ -4,3 +4,13 @@ https://drive.google.com/drive/folders/1-0akJ1FJd4nXRe0fAXwl7KpG3MIIY_30?usp=dri
 
 download model
 https://drive.google.com/drive/folders/1-7nEJbg4x-eLVTy8aTLrFvK0GYDaze-3?usp=drive_link
+
+
+
+## Usage Guide
+
+
+#### download the model then create a a folder name data, and paste and extrct  the model there.
+
+
+
