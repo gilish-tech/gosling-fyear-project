@@ -4,7 +4,7 @@ import os
 from pydantic import BaseModel
 from model.model_loader import ModelLoader
 from happytransformer import TTSettings
-from utils import correct_document, extract_text_from_docx,extract_text_from_pdf,save_text_to_pdf,save_text_to_docx,correct_text
+from utils import correct_word_in_sentence,correct_document, extract_text_from_docx,extract_text_from_pdf,save_text_to_pdf,save_text_to_docx,correct_text
 from fastapi.middleware.cors import CORSMiddleware
 import nltk
 class SentenceRequest(BaseModel):
@@ -14,7 +14,7 @@ class SentenceRequest(BaseModel):
 app = FastAPI()
 
 
-origins = ["http://localhost:3000","http://localhost:5173"]
+origins = ["http://localhost:3000","http://localhost:5173"] 
 
 app.add_middleware(
     CORSMiddleware,
@@ -85,9 +85,11 @@ async def generate_text(request: SentenceRequest):
         min_length=len(request.text.split()),  # Set a minimum length based on input word count
         max_length=len(request.text.split()) + 50,  # Allow some flexibility with max length
         early_stopping=True)
-    
+        
 
-        result = model.generate_text(f"grammar: {request.text}", args=args)
+        text = correct_word_in_sentence(request.text)
+
+        result = model.generate_text(f"grammar: {text}", args=args)
         ans =  result.text
     else :
         ans = correct_document(request.text)

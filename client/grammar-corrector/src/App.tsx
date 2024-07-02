@@ -3,7 +3,7 @@
 import Header from "./components/Header"
 import { AiOutlineCheckCircle } from "react-icons/ai"
 import { RiFileAddLine } from "react-icons/ri"
-import React,{ useState } from "react"
+import React,{ useEffect, useState } from "react"
 import  {uploadFile,correctGrammar,getFiletype,checkIfFileIsSuported,extractTextFromDocx} from "./utils"
 import {motion} from "framer-motion"
 import Toast from "./components/Toast"
@@ -24,7 +24,23 @@ function App() {
   const [sendButtonName, setSendButtonName] = useState("Correct")
   const [disabled, setDisabled] =  useState(true)
   const [correctedText,setCorrectedText] = useState(false)
+  const [wordCount,setWordCount] = useState(0)
+  const [charaterCount,setCharaterCount] = useState(0)
 
+
+
+  useEffect(()=>{
+    const numOfWords = text.split(" ").filter((x)=>x!="")
+    // const numOfWordsWithoutWhiteSpace = text.split(" ").length
+
+    const numOfChars = text.length 
+
+    setWordCount(numOfWords.length)
+    setCharaterCount(numOfChars)
+
+    
+
+  },[text])
 
 
 
@@ -111,9 +127,9 @@ function App() {
         }
 
        </div>
-      <div className="h-screen flex-col flex font-bold text-center  items-center justify-center gap-4">
-          <h1 className='text-white text-3xl lg:text-5xl mt-[100px]'>Gosling Grammar corrector</h1>
-          <p className="text-white/85 text-xl font-semibold">Use Gosling free writing assistant to check your English text for grammar, style, and spelling errors.</p>
+      <div className="h-screen flex-col flex font-bold text-center  items-center justify-center gap-4 outline-2 hover:outline-purple-700">
+          <h1 className='text-white text-3xl lg:text-5xl mt-[100px] tracking-widest'>Gosling Grammar corrector</h1>
+          <p className="text-white/85 text-xl font-semibold tracking-wide">Use Gosling free writing assistant to check your English text for grammar, style, and spelling errors.</p>
 
           <div className="bg-white-sm shadow-lg h-[500px] w-[80%] bg-white">
             <motion.textarea placeholder="Enter Text Or Paste Text here" 
@@ -125,7 +141,7 @@ function App() {
                     setSendButtonName("correct")
 
                 }}
-                className={`${correctedText?"text-purple-700" :"text-black/65"} py-3 pl-4  box-border w-full h-[80%] text-3xl text-left border-none outline-none p-0 transition-colors  duration-500 `}/>
+                className={`${correctedText?"text-purple-700" :"text-black"} py-3 pl-4  box-border w-full h-[80%] text-[27px] font-normal text-left border-none outline-none p-0 transition-colors  duration-500  `}/>
 
             <div className="flex justify-end gap-4 items-center px-7">
 
@@ -141,6 +157,12 @@ function App() {
                 </div>
 
             </div>
+
+            <div className="flex justify-end items-center px-10 mr-20  gap-4">
+                <p className="text-[18px]">Word Count  <span>{wordCount}</span></p>
+                <p className="text-[18px]">Character Count: {charaterCount}</p>
+            </div>
+
 
               
           </div>

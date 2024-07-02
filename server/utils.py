@@ -7,6 +7,8 @@ from happytransformer import TTSettings
 import os
 from model.model_loader import ModelLoader
 import nltk
+from textblob import TextBlob
+from constants import MY_WORD_LIST
 
 
 model = ModelLoader.get_model()
@@ -31,9 +33,21 @@ def extract_text_from_docx(file_path):
 def split_into_sentences(text):
     return nltk.tokenize.sent_tokenize(text)
 
+# correct spelling
+def correct_spelling(text):
+    if text.lower() in MY_WORD_LIST:
+      return text
+    blob = TextBlob(text)
+    return blob.correct().string
+
+def correct_word_in_sentence(sents):
+  words = sents.split(" ")
+  corrected_word =[correct_spelling(text) for text in words]
+  return " ".join(corrected_word)
+
 def correct_document(text):
     sentences = split_into_sentences(text)
-    corrected_sentences = [correct_text(sentence) for sentence in sentences]
+    corrected_sentences = [correct_text(correct_word_in_sentence(sentence)) for sentence in sentences]
     return ' '.join(corrected_sentences)
 
 def correct_text(text):
